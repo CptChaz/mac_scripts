@@ -1,0 +1,12 @@
+# macOS system files
+.DS_Store
+
+# Logs
+*.log
+
+# Vim swap files
+*.swp
+*.swo
+
+# Backup files
+*~
