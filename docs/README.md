@@ -27,7 +27,7 @@ This repository contains macOS utility scripts developed by **Cpt. Chaz** to ass
   chmod +x uninstall.sh
   ```
 
-3. Run the script:
+Alternatively, navigate to the script location and call the script:
   ```
   ./uninstall.sh
   ```
