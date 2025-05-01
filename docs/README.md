@@ -6,8 +6,7 @@ This repository contains macOS utility scripts developed by **Cpt. Chaz** to ass
 
 ## Available Scripts
 
-### `uninstall.sh`
-- **Version:** v1.0  
+### `uninstall.sh`  
 - **Status:** Tested  
 - **Description:**  
   Fully removes a selected application from macOS, including support files in both user-level and system-level directories. Features:
@@ -20,17 +19,22 @@ This repository contains macOS utility scripts developed by **Cpt. Chaz** to ass
   - Final summary includes total disk space savings
 
 - **Directions:**  
-  Open Terminal, drag the script into the window, and follow the prompts. If needed:
+  1. Open Terminal, drag the script into the window, and follow the prompts.
+
+  2. Make the script executable if needed:
 
   ```bash
   chmod +x uninstall.sh
+  ```
+
+  3. Run the script:
+  ```
   ./uninstall.sh
   ```
 
 ---
 
 ### `batch_convert_heic.sh`
-- **Version:** v1.0  
 - **Status:** Tested  
 - **Description:**  
   Recursively finds and batch-converts all `.heic` image files within a specified directory to `.jpg` format using the `sips` utility. Original `.heic` files are retained.
