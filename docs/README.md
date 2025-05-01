@@ -19,15 +19,15 @@ This repository contains macOS utility scripts developed by **Cpt. Chaz** to ass
   - Final summary includes total disk space savings
 
 - **Directions:**  
-  1. Open Terminal, drag the script into the window, and follow the prompts.
+1. Open Terminal, drag the script into the window, and follow the prompts.
 
-  2. Make the script executable if needed:
+2. Make the script executable if needed:
 
   ```bash
   chmod +x uninstall.sh
   ```
 
-  3. Run the script:
+3. Run the script:
   ```
   ./uninstall.sh
   ```
@@ -40,14 +40,14 @@ This repository contains macOS utility scripts developed by **Cpt. Chaz** to ass
   Recursively finds and batch-converts all `.heic` image files within a specified directory to `.jpg` format using the `sips` utility. Original `.heic` files are retained.
 
 - **Directions:**  
-  1. Open Terminal.  
-  2. Make script executable if needed:
+1. Open Terminal.  
+2. Make script executable if needed:
 
      ```bash
      chmod +x batch_convert_heic.sh
      ```
 
-  3. Run the script and provide a folder path when prompted, or pass the folder as an argument:
+3. Run the script and provide a folder path when prompted, or pass the folder as an argument:
 
      ```bash
      ./batch_convert_heic.sh /path/to/folder
