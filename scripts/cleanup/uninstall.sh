@@ -1,27 +1,43 @@
 #!/bin/bash
 
 # Author: [Cpt. Chaz]
-# Created: [04/13/25]
-# Revised: [04/13/25]
-# Description: This script assists in fully removing macOS applications by searching for and optionally deleting leftover files at both user- and system-level locations.
-# Usage: Drag an app into the terminal when prompted, or manually enter the app name. Run in Terminal. Includes dry run mode for previewing deletions before committing.
-#   How It Works:
-#     1. Prompts the user to confirm dry run mode and style mode (ASCII output).
-#     2. If the app still exists, its bundle ID is extracted to target related files.
-#     3. Scans user-level and system-level locations for matching files/folders.
-#     4. Skips anything with "apple" in the name for safety.
-#     5. Optionally deletes system-level matches after confirmation.
-#     6. Displays summary with human-readable space savings.
+# Created: [04/01/25]
+# Updated: [04/30/25]
+# Version Number: V 1.2.6
+# Description: This is a macOS uninstall cleanup tool for detecting and removing residual files left behind by deleted apps. It supports both dry-run and full deletion modes, handles user/system-level paths, includes a style mode with ASCII art, and skips any paths related to Apple apps. When dragging an app icon into the terminal, delete the icon after process finishes.
 #
-# Status: Tested on Mac OS 13.x
+# Dependancies: macOS built-in utilities only: find, awk, du, rm, PlistBuddy, sudo
+# Status: Tested
 #
 # Credits:
-# - This script was developed with the assistance of ChatGPT 4o, an OpenAI language model.
-
+#  - Built from scratch and refined interactively with ChatGPT (OpenAI)
+#
+# - This script was created with the help of ChatGPT, an OpenAI language model.
+#
+# Directions:
+# 1. Save script to any location, then run the script manually in Terminal.
+# 2. Choose whether to enable “style” mode (ASCII art headers).
+# 3. Choose dry-run or full cleanup.
+# 4. Drag the app into the terminal when prompted or input the app name manually if there's no app icon.
+# 5. Review matched paths and confirm deletions.
+# 6. If some deletions fail, optionally retry with sudo.
+# 7. Final summary and byte savings will be displayed.
+#
+# macOS Version: Tested on macOS 13 Ventura and macOS 14 Sonoma. Compatible with macOS 15 Sequoia (expected).
 
 echo ""
 echo "uninstall.sh v1.2.5 – Created April 2025"
 echo ""
+
+# Check macOS version and warn if below 13 (Ventura)
+OS_VERSION=$(sw_vers -productVersion | awk -F. '{ printf "%d.%d", $1, $2 }')
+MIN_VERSION=13.0
+
+if (( $(echo "$OS_VERSION < $MIN_VERSION" | bc -l) )); then
+  echo "WARNING: This script is designed for macOS 13 Ventura or later."
+  echo "You are running macOS $OS_VERSION. Proceed with caution."
+  echo ""
+fi
 
 spinner_running=false
 spinner_pid=""
@@ -144,6 +160,7 @@ SYSTEM_DIRS=( "/Library/Application Support" "/Library/Application Support/Crash
   "/Library/Containers" "/Library/Logs" "/Library/LaunchAgents" "/Library/LaunchDaemons" "/Library/Preferences"
   "/Library/PrivilegedHelperTools" "/Library/Extensions" "/private/var/db/receipts" "/usr/local/bin" "/usr/local/etc"
   "/usr/local/sbin" "/usr/local/share" "/usr/local/var" "$DARWIN_CACHE" "$DARWIN_TEMP" )
+
 echo ""
 echo "========================================================"
 echo "           macOS App Cleanup Script (Manual)            "
@@ -251,8 +268,7 @@ if [ "$DRY_RUN" = false ]; then
   echo "Summary:"
   echo "  Files and folders deleted: $DELETED_FILE_COUNT"
   echo -n "  Total space freed: "
-  echo "$DELETED_BYTES" | awk '{ byte=$1; kb=byte/1024; mb=kb/1024; gb=mb/1024; if (gb>=1) printf "%.2f GB\\n", gb; else if (mb>=1) printf "%.2f MB\\n", mb; 
-else if (kb>=1) printf "%.2f KB\\n", kb; else print byte " B"}'
+  echo "$DELETED_BYTES" | awk '{ byte=$1; kb=byte/1024; mb=kb/1024; gb=mb/1024; if (gb>=1) printf "%.2f GB\n", gb; else if (mb>=1) printf "%.2f MB\n", mb; else if (kb>=1) printf "%.2f KB\n", kb; else print byte " B"}'
 
   if [ "${#FAILED_DELETES[@]}" -gt 0 ]; then
     echo ""
@@ -306,8 +322,7 @@ else
     echo "    $match"
   done
   echo -n "  Estimated space to be freed: "
-  echo "$DRY_RUN_BYTES" | awk '{ byte=$1; kb=byte/1024; mb=kb/1024; gb=mb/1024; if (gb>=1) printf "%.2f GB\\n", gb; else if (mb>=1) printf "%.2f MB\\n", mb; 
-else if (kb>=1) printf "%.2f KB\\n", kb; else print byte " B"}'
+  echo "$DRY_RUN_BYTES" | awk '{ byte=$1; kb=byte/1024; mb=kb/1024; gb=mb/1024; if (gb>=1) printf "%.2f GB\n", gb; else if (mb>=1) printf "%.2f MB\n", mb; else if (kb>=1) printf "%.2f KB\n", kb; else print byte " B"}'
   echo "  No files were deleted."
 fi
 
@@ -321,4 +336,3 @@ if [ "$STYLE_MODE" = true ]; then
   echo "         Mission Accomplished        "
   echo "         >> genorts complete"
 fi
-
